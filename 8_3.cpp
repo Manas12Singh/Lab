@@ -40,7 +40,7 @@ int main() {
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++)
                 cin >> matrix[i][j];
-        cout << "Minimum Spanning Weight: " << prims(n, matrix, 0) << endl;
+        cout << "Maximum Spanning Weight: " << prims(n, matrix, 0) << endl;
         cout << endl;
     }
     return 0;
