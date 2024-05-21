@@ -7,8 +7,21 @@
 
 using namespace std;
 
+int findParent(vector<int> &parent, int i) {
+    if (parent[i] == i)
+        return i;
+    return parent[i] = findParent(parent, parent[i]);
+}
+
+void unite(vector<int> &parent, int i, int j) {
+    i = findParent(parent, i);
+    j = findParent(parent, j);
+    if (i != j)
+        parent[j] = i;
+}
+
 int kruskal(int n, vector<vector<int>> &matrix) {
-    vector<int> parent(n), rank(n, 1);
+    vector<int> parent(n);
     int res = 0;
     for (int i = 0; i < n; i++)
         parent[i] = i;
@@ -17,7 +30,15 @@ int kruskal(int n, vector<vector<int>> &matrix) {
         for (int j = 0; j < n; j++)
             if (matrix[i][j])
                 pq.emplace(matrix[i][j], make_pair(i, j));
-
+    while (!pq.empty()) {
+        auto temp = pq.top();
+        pq.pop();
+        if (findParent(parent, temp.second.first) == findParent(parent, temp.second.second))
+            continue;
+        res += temp.first;
+        unite(parent, temp.second.first, temp.second.second);
+    }
+    return res;
 }
 
 int main() {
